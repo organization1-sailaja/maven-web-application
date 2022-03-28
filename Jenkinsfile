@@ -18,8 +18,10 @@ sh "$mavenHome/bin/mvn deploy"
 }
 
 stage('DeployAppToTomcat'){
-sshagent(['0e40c6d9-fb97-4749-aec3-abdd7e54c4fc']) {
+   steps{
+   sshagent(['0e40c6d9-fb97-4749-aec3-abdd7e54c4fc']) {
    sh "scp -o StrictHostKeyChecking=no target/*.war ec2-user@15.206.90.240:/opt/apache-tomcat-9.0.59/webapps/"
+}
 }
 }
 
