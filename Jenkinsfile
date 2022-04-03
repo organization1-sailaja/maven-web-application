@@ -3,6 +3,7 @@ def mavenHome = tool name: "maven3.8.5"
     echo "The node name is: ${env.NODE_NAME}"
     echo "The Job Name is: ${env.JOB_NAME}"
     buildName 'Dev - ${BUILD_NUMBER}'
+    buildDescription 'Pipeline Script - Scriptedway'
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: '']])    
 
 stage('CheckoutCode'){
