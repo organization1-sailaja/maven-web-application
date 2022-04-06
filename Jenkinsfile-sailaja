@@ -1,3 +1,31 @@
+//Function for Slack Notifications
+def sendSlackNotification(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
+
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    color = 'YELLOW'
+    colorCode = '#FFFF00'
+  } else if (buildStatus == 'SUCCESSFUL') {
+    color = 'GREEN'
+    colorCode = '#00FF00'
+  } else {
+    color = 'RED'
+    colorCode = '#FF0000'
+  }
+
+  // Send notifications
+  slackSend (color: colorCode, message: summary)
+}
+
+
 node{
 def mavenHome = tool name: "maven3.8.5"
     echo "The node name is: ${env.NODE_NAME}"
@@ -5,7 +33,7 @@ def mavenHome = tool name: "maven3.8.5"
     buildName 'Dev - ${BUILD_NUMBER}'
     buildDescription 'Pipeline Script - Scriptedway'
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: '']])    
-
+try{
 stage('CheckoutCode'){
 git branch: 'development', credentialsId: 'a3b8426d-2ff4-48a8-95ba-79d97d091786', url: 'https://github.com/organization1-sailaja/maven-web-application.git'
 }
@@ -13,7 +41,7 @@ git branch: 'development', credentialsId: 'a3b8426d-2ff4-48a8-95ba-79d97d091786'
 stage('Build'){
 sh "$mavenHome/bin/mvn clean package"
 }
-
+/*
 stage('SonarQubeReport'){
 sh "$mavenHome/bin/mvn sonar:sonar"
 }
@@ -28,5 +56,12 @@ sshagent(['0e40c6d9-fb97-4749-aec3-abdd7e54c4fc']) {
     sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@65.2.78.206:/opt/apache-tomcat-9.0.59/webapps/"
 }
 }
-
+*/
+}//Try Block closing
+catch(e){
+currentBuild.result= "FAILED"
+}//catch block closing
+finally{
+sendSlackNotification(currentBuild.result)
+}
 }//node closing
