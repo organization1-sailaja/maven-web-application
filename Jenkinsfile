@@ -5,7 +5,7 @@ node{
     echo "Build Number is : ${BUILD_NUMBER}"
     
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
-    properties([pipelineTriggers([pollSCM('* * * * *')])])
+    //properties([pipelineTriggers([pollSCM('* * * * *')])])
     
     stage('Checkoutcode'){
      git branch: 'development', credentialsId: 'b63870f2-dd31-4c46-ab58-ab5deb585d2a', url: 'https://github.com/organization1-sailaja/maven-web-application.git'
