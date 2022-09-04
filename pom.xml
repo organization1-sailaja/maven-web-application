@@ -98,13 +98,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Nexus-releases repository</name>
-	      <url>http://3.109.132.126:8081/repository/nexus-releasesrepo/</url>
+	      <url>http://43.205.233.101:8081/repository/nexus-releasesrepo/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>nexus-snapshot repository</name>
-	      <url>http://3.109.132.126:8081/repository/nexus-snapshotrepo/</url>
+	      <url>http://43.205.233.101:8081/repository/nexus-snapshotrepo/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
