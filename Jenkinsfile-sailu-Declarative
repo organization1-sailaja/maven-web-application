@@ -1,5 +1,5 @@
 pipeline{
-agentany
+agent any
 
     tools{
     maven "Maven3.8.5"
@@ -25,19 +25,19 @@ agentany
     
         stage('Build'){
         steps{
-            sh "$mavenHome/bin/mvn package"
+            sh "mvn clean package"
         }
         }
     
         stage('SonarQubeReport'){
         steps{
-             sh "$mavenHome/bin/mvn sonar:sonar"
+             sh "mvn sonar:sonar"
         }
         }
     
         stage('ArtifactRepo'){
         steps{
-             sh "$mavenHome/bin/mvn deploy"
+             sh "mvn deploy"
         }
         }
     
