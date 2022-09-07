@@ -12,11 +12,6 @@ pipeline{
     echo "Build Number is : ${BUILD_NUMBER}"
     }
    
-   parameters {
-    choice choices: ['development', 'master', 'qa', 'test'], description: 'select branch name', name: 'BranchName'
-   }
-
-    
     //properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
     //properties([pipelineTriggers([pollSCM('* * * * *')])])
     
@@ -24,7 +19,7 @@ pipeline{
     
     stage('Checkoutcode'){
     steps{
-    git branch: "${params.BranchName}", credentialsId: 'b63870f2-dd31-4c46-ab58-ab5deb585d2a', url: 'https://github.com/organization1-sailaja/maven-web-application.git'
+    git branch: 'development', credentialsId: 'b63870f2-dd31-4c46-ab58-ab5deb585d2a', url: 'https://github.com/organization1-sailaja/maven-web-application.git'
     }
     }
     
