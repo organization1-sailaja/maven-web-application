@@ -1,12 +1,12 @@
 node{
     def mavenHome = tool name: "Maven3.8.5"
     buildName 'Dev-${BUILD_NUMBER}'
-    buildDescription 'Pipeline-Scriptedway'
+    buildDescription 'MultiPipeline-Scriptedway'
     
     echo "Job Name is : ${JOB_NAME}"
     echo "Build Number is : ${BUILD_NUMBER}"
     
-    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
+    //properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
     //properties([pipelineTriggers([pollSCM('* * * * *')])])
     
     stage('Checkoutcode'){
@@ -27,7 +27,7 @@ node{
     
     stage('DeploytoTomcat'){
     sshagent(['45a9a2dd-974f-4c29-81d1-693369fa7235']) {
-        sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@65.2.9.198:/opt/apache-tomcat-10.0.23/webapps"
+        sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.233.86.227:/opt/apache-tomcat-10.0.23/webapps"
     }    
     }
     
