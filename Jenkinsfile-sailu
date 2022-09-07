@@ -1,12 +1,12 @@
 node{
     def mavenHome = tool name: "Maven3.8.5"
     buildName 'Dev-${BUILD_NUMBER}'
-    buildDescription 'Pipeline-Scriptedway'
+    buildDescription 'MultiPipeline-Scriptedway'
     
     echo "Job Name is : ${JOB_NAME}"
     echo "Build Number is : ${BUILD_NUMBER}"
     
-    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
+    //properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
     //properties([pipelineTriggers([pollSCM('* * * * *')])])
     
     stage('Checkoutcode'){
