@@ -1,0 +1,58 @@
+pipeline{
+    agentany
+    
+    tools{
+    maven "Maven3.8.5"
+    }
+    
+    options{
+    buildName 'Dev-${BUILD_NUMBER}'
+    buildDescription 'MultiPipeline-Scriptedway'
+    echo "Job Name is : ${JOB_NAME}"
+    echo "Build Number is : ${BUILD_NUMBER}"
+    }
+   
+   parameters {
+    choice choices: ['development', 'master', 'qa', 'test'], description: 'select branch name', name: 'BranchName'
+   }
+
+    
+    //properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))])
+    //properties([pipelineTriggers([pollSCM('* * * * *')])])
+    
+    stages{
+    
+    stage('Checkoutcode'){
+    steps{
+    git branch: "${params.BranchName}", credentialsId: 'b63870f2-dd31-4c46-ab58-ab5deb585d2a', url: 'https://github.com/organization1-sailaja/maven-web-application.git'
+    }
+    }
+    
+    stage('Build'){
+       steps{
+       sh "$mavenHome/bin/mvn package"
+    }
+    }
+    
+    stage('SonarQubeReport'){
+    steps{
+     sh "$mavenHome/bin/mvn sonar:sonar"
+    }
+    }
+    
+    stage('ArtifactRepo'){
+    steps{
+        sh "$mavenHome/bin/mvn deploy"
+    }
+    }
+    
+    stage('DeploytoTomcat'){
+    steps{
+    sshagent(['45a9a2dd-974f-4c29-81d1-693369fa7235']) {
+        sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.233.86.227:/opt/apache-tomcat-10.0.23/webapps"
+    }    
+    }
+    }
+    
+}
+}
